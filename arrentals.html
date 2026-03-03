@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.R Rentals Service | Motorcycle Rentals</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #001f3f;
+            color: #ffffff;
+        }
+
+        .hero {
+            height: 90vh;
+            background: linear-gradient(rgba(0, 31, 63, 0.75), rgba(0, 31, 63, 0.85)), url("rental_bg.jpg") center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .logo {
+            width: 200px;
+            max-width: 45vw;
+            height: auto;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 25px;
+            background: #ffffff;
+            padding: 8px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 223, 0, 0.5);
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .hero-buttons button {
+            background: #ffd700;
+            color: #001f3f;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        .hero-buttons button:hover {
+            background: #001f3f;
+            color: #ffffff;
+        }
+
+        section {
+            padding: 60px 10%;
+        }
+
+        section h2 {
+            font-size: 36px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ffd700;
+        }
+
+        .bikes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .card {
+            background: #ffffff;
+            color: #001f3f;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 250px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 15px;
+        }
+
+        .card-content h3 {
+            margin-bottom: 10px;
+        }
+
+        .card-content .price {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .check-availability {
+            background: #ffd700;
+            color: #001f3f;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .check-availability:hover {
+            background: #001f3f;
+            color: #ffffff;
+        }
+
+        .about,
+        .contact {
+            text-align: center;
+        }
+
+        .about p,
+        .contact p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+
+        .contact-link {
+            color: #ffd700;
+            text-decoration: none;
+        }
+
+        .contact-link:hover {
+            text-decoration: underline;
+        }
+
+        .map-container {
+            margin-top: 20px;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        footer {
+            background: #001f3f;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 0;
+            border-top: 2px solid #ffd700;
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 48px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            section {
+                padding: 40px 5%;
+            }
+        }
+
+        /* Calendar modal */
+        #calendar-modal {
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            padding: 18px 18px 14px;
+            background: #001f3f;
+            color: #ffffff;
+            width: min(520px, calc(100vw - 32px));
+        }
+
+        #calendar-modal::backdrop {
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .cal-title {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .cal-title h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .cal-title .cal-model {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .cal-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 10px 0 12px;
+        }
+
+        .cal-nav button {
+            background: transparent;
+            color: #ffd700;
+            border: 1px solid rgba(255, 215, 0, 0.7);
+            padding: 8px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .cal-nav button:hover {
+            background: rgba(255, 215, 0, 0.08);
+        }
+
+        .cal-month-label {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .cal-weekdays,
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .cal-weekdays div {
+            text-align: center;
+            font-size: 12px;
+            letter-spacing: 0.02em;
+            opacity: 0.85;
+            padding: 4px 0;
+        }
+
+        .cal-day {
+            height: 42px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .cal-day:hover:not(:disabled) {
+            border-color: rgba(255, 215, 0, 0.75);
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.18) inset;
+        }
+
+        .cal-day.available {
+            background: #ffd700;
+            color: #001f3f;
+            border-color: rgba(0, 0, 0, 0.15);
+            font-weight: 600;
+        }
+
+        .cal-day.unavailable,
+        .cal-day:disabled {
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.45);
+            border-color: rgba(255, 255, 255, 0.08);
+            cursor: not-allowed;
+            filter: grayscale(0.7);
+        }
+
+        .cal-day.selected {
+            outline: 2px solid rgba(255, 215, 0, 0.9);
+            outline-offset: 2px;
+        }
+
+        .cal-spacer {
+            height: 42px;
+        }
+
+        .cal-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .cal-legend {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            opacity: 0.92;
+            flex-wrap: wrap;
+        }
+
+        .cal-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .cal-dot.available {
+            background: #ffd700;
+        }
+
+        .cal-dot.unavailable {
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .cal-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .cal-actions button {
+            background: #ffd700;
+            color: #001f3f;
+            border: none;
+            padding: 9px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .cal-actions button:hover {
+            background: #ffffff;
+        }
+
+        .cal-selected {
+            margin-top: 10px;
+            font-size: 13px;
+            opacity: 0.95;
+        }
+    </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+    <img src="logo-ar.png" class="logo" alt="A.R Rentals logo">
+    <h1>A.R Rentals Service</h1>
+    <p>Affordable Bike & Scooty Rental</p>
+    <div class="hero-buttons">
+        <button onclick="document.getElementById('bikes').scrollIntoView({behavior:'smooth'})">View Bikes</button>
+        <button class="secondary-btn" onclick="document.getElementById('scooties').scrollIntoView({behavior:'smooth'})">View Scooties</button>
+    </div>
+</div>
+
+<!-- BIKES -->
+<section id="bikes">
+    <h2>Bikes</h2>
+    <div class="bikes">
+        <div class="card">
+            <img src="xpulse200.jpg" alt="XPulse 200">
+            <div class="card-content">
+                <h3>XPulse 200</h3>
+                <p class="price">₹999 / Day</p>
+                <button class="check-availability" onclick="openCalendar(event)">Check Availability</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="himalayan411.jpg" alt="Himalayan 411">
+            <div class="card-content">
+                <h3>Himalayan 411</h3>
+                <p class="price">₹1299 / Day</p>
+                <button class="check-availability" onclick="openCalendar(event)">Check Availability</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="himalayan450.jpg" alt="Himalayan 450">
+            <div class="card-content">
+                <h3>Himalayan 450</h3>
+                <p class="price">₹1599 / Day</p>
+                <button class="check-availability" onclick="openCalendar(event)">Check Availability</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="meteor350.jpg" alt="Meteor 350">
+            <div class="card-content">
+                <h3>Meteor 350</h3>
+                <p class="price">₹1299 / Day</p>
+                <button class="check-availability" onclick="openCalendar(event)">Check Availability</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="scram411.jpg" alt="Scram 411">
+            <div class="card-content">
+                <h3>Scram 411</h3>
+                <p class="price">₹1299 / Day</p>
+                <button class="check-availability" onclick="openCalendar(event)">Check Availability</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="ronin225.jpg" alt="Ronin 225">
+            <div class="card-content">
+                <h3>Ronin 225</h3>
+                <p class="price">₹999 / Day</p>
+                <button class="check-availability" onclick="openCalendar(event)">Check Availability</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="hunter350.jpg" alt="Hunter 350">
+            <div class="card-content">
+                <h3>Hunter 350</h3>
+                <p class="price">₹1199 / Day</p>
+                <button class="check-availability" onclick="openCalendar(event)">Check Availability</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="classic350.jpg" alt="Classic 350">
+            <div class="card-content">
+                <h3>Classic 350</h3>
+                <p class="price">₹1199 / Day</p>
+                <button class="check-availability" onclick="openCalendar(event)">Check Availability</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SCOOTIES -->
+<section id="scooties">
+    <h2>Scooties</h2>
+    <div class="bikes">
+        <div class="card">
+            <img src="ntorq125xt.jpg" alt="NTORQ 125 XT">
+            <div class="card-content">
+                <h3>NTORQ 125 XT</h3>
+                <p class="price">₹699 / Day</p>
+                <button class="check-availability" onclick="openCalendar(event)">Check Availability</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="ntorq125.jpg" alt="NTORQ 125">
+            <div class="card-content">
+                <h3>NTORQ 125</h3>
+                <p class="price">₹599 / Day</p>
+                <button class="check-availability" onclick="openCalendar(event)">Check Availability</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="dio125.jpg" alt="Dio 125">
+            <div class="card-content">
+                <h3>Dio 125</h3>
+                <p class="price">₹599 / Day</p>
+                <button class="check-availability" onclick="openCalendar(event)">Check Availability</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="dio110.jpg" alt="Dio 110">
+            <div class="card-content">
+                <h3>Dio 110</h3>
+                <p class="price">₹549 / Day</p>
+                <button class="check-availability" onclick="openCalendar(event)">Check Availability</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about">
+    <h2>About Us</h2>
+    <p>
+        A.R Rentals Service provides well-maintained motorcycles and scooties suitable for city rides,
+        touring, and adventure travel with reliable service and affordable pricing.
+    </p>
+</section>
+
+<!-- CONTACT -->
+<section class="contact">
+    <h2>Contact Information</h2>
+    <p><strong>Phone:</strong> <a href="tel:+918471973427" class="contact-link">+91 8471973427</a></p>
+    <p><strong>Email:</strong> <a href="mailto:mohanraju491@gmail.com" class="contact-link">mohanraju491@gmail.com</a></p>
+    <p><strong>Address:</strong> Ghoramara, Bhetapara, Guwahati, Assam</p>
+    <p>Open Daily: 8:00 AM – 8:00 PM</p>
+    <div class="map-container">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3582.3445954243!2d91.78082107545514!3d26.120305077128364!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a5f1495d3c577%3A0x173fea707f17bc16!2sAR%20BIKE%20RENTAL%20%7C%20scooter%20rental%20Guwahati!5e0!3m2!1sen!2sin!4v1771603455580!5m2!1sen!2sin"
+                width="100%" height="450" style="border:0;" allowfullscreen loading="lazy"></iframe>
+    </div>
+</section>
+
+<footer>
+    ©️ 2026 A.R Rentals Service
+</footer>
+
+<!-- Calendar Modal -->
+<dialog id="calendar-modal">
+    <div class="cal-title">
+        <h3>Select a Date</h3>
+        <div class="cal-model" id="cal-model"></div>
+    </div>
+
+    <div class="cal-nav">
+        <button type="button" id="cal-prev" aria-label="Previous month">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <div class="cal-month-label" id="cal-month-label"></div>
+        <button type="button" id="cal-next" aria-label="Next month">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <div class="cal-weekdays" aria-hidden="true" id="cal-weekdays"></div>
+    <div class="cal-grid" id="cal-grid" aria-label="Calendar dates"></div>
+
+    <div class="cal-selected" id="cal-selected"></div>
+
+    <div class="cal-footer">
+        <div class="cal-legend" aria-label="Legend">
+            <span><span class="cal-dot available"></span>Available</span>
+            <span><span class="cal-dot unavailable"></span>Unavailable</span>
+        </div>
+        <div class="cal-actions">
+            <button type="button" id="cal-request-btn" onclick="handleBookingRequest()" disabled>Request Booking</button>
+            <button type="button" onclick="closeCalendar()">Close</button>
+        </div>
+    </div>
+</dialog>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCzmYlbNqXAFfIl93RrRbiwRGQE13QarqI",
+  authDomain: "arrentals-559f4.firebaseapp.com",
+  projectId: "arrentals-559f4",
+  storageBucket: "arrentals-559f4.firebasestorage.app",
+  messagingSenderId: "197768582450",
+  appId: "1:197768582450:web:029b4c072c7bb959f0332b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Expose to non-module script via window
+window.unavailableByModel = {};
+
+async function preloadUnavailableDates() {
+  const snap = await getDocs(collection(db, "availability"));
+
+  snap.forEach(docSnap => {
+    const { model, date } = docSnap.data();
+    if (!window.unavailableByModel[model]) {
+      window.unavailableByModel[model] = new Set();
+    }
+    window.unavailableByModel[model].add(date);
+  });
+}
+
+function buildAvailableSet(model) {
+  const blockedSet = window.unavailableByModel[model] || new Set();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const daysAhead = 60;
+  const closedWeekdays = new Set([0]); // Sunday closed
+  const result = new Set();
+
+  for (let i = 0; i <= daysAhead; i++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() + i);
+
+    if (closedWeekdays.has(d.getDay())) continue;
+
+    const iso = d.toISOString().split("T")[0];
+    if (!blockedSet.has(iso)) {
+      result.add(iso);
+    }
+  }
+
+  return result;
+}
+
+// Make calendar helper available globally
+window.buildAvailableSet = buildAvailableSet;
+
+// Preload Firestore data once on load
+preloadUnavailableDates().catch(console.error);
+</script>
+
+<script>
+    const calendarState = {
+        model: null,
+        monthCursor: new Date(),
+        availableSet: new Set(),
+        selectedISO: null,
+        rangeStartISO: null,
+        rangeEndISO: null,
+    };
+
+    function pad2(n) {
+        return String(n).padStart(2, '0');
+    }
+
+    function toISODate(d) {
+        return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+    }
+
+    function startOfDay(d) {
+        return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    }
+
+    function getModelFromEvent(event) {
+        const card = event?.target?.closest?.('.card');
+        const model = card?.querySelector?.('h3')?.textContent?.trim();
+        return model || 'Rental';
+    }
+
+    function setMonthCursor(dateLike) {
+        const d = new Date(dateLike);
+        calendarState.monthCursor = new Date(d.getFullYear(), d.getMonth(), 1);
+    }
+
+    function renderWeekdays() {
+        const el = document.getElementById('cal-weekdays');
+        const labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        el.innerHTML = labels.map((l) => `<div>${l}</div>`).join('');
+    }
+
+    function renderCalendar() {
+        const modal = document.getElementById('calendar-modal');
+        if (!modal?.open) return;
+
+        const grid = document.getElementById('cal-grid');
+        const monthLabel = document.getElementById('cal-month-label');
+        const selectedEl = document.getElementById('cal-selected');
+        const modelEl = document.getElementById('cal-model');
+
+        const cursor = calendarState.monthCursor;
+        const year = cursor.getFullYear();
+        const month = cursor.getMonth();
+        const first = new Date(year, month, 1);
+        const last = new Date(year, month + 1, 0);
+        const today = startOfDay(new Date());
+
+        monthLabel.textContent = first.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+        modelEl.textContent = calendarState.model ? `Model: ${calendarState.model}` : '';
+
+        const firstWeekday = first.getDay();
+        const daysInMonth = last.getDate();
+
+        const parts = [];
+        for (let i = 0; i < firstWeekday; i++) {
+            parts.push(`<div class="cal-spacer" aria-hidden="true"></div>`);
+        }
+
+        const startISO = calendarState.rangeStartISO;
+        const endISO = calendarState.rangeEndISO || calendarState.rangeStartISO;
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const d = new Date(year, month, day);
+            const iso = toISODate(d);
+            const isPast = startOfDay(d).getTime() < today.getTime();
+            const isAvailable = !isPast && calendarState.availableSet.has(iso);
+
+            let inRange = false;
+            let isStart = false;
+            let isEnd = false;
+            if (startISO) {
+                if (!endISO || startISO === endISO) {
+                    isStart = iso === startISO;
+                    isEnd = iso === startISO;
+                } else {
+                    isStart = iso === startISO;
+                    isEnd = iso === endISO;
+                    inRange = iso > startISO && iso < endISO;
+                }
+            }
+
+            const classes = [
+                'cal-day',
+                isAvailable ? 'available' : 'unavailable',
+                (isStart || isEnd) ? 'selected' : '',
+                inRange ? 'in-range' : '',
+            ]
+                .filter(Boolean)
+                .join(' ');
+
+            const disabledAttr = isAvailable ? '' : 'disabled';
+            const aria = isAvailable ? `aria-label="Available: ${iso}"` : `aria-label="Unavailable: ${iso}"`;
+
+            parts.push(
+                `<button type="button" class="${classes}" data-iso="${iso}" ${disabledAttr} ${aria}>${day}</button>`
+            );
+        }
+
+        grid.innerHTML = parts.join('');
+
+        if (!calendarState.rangeStartISO) {
+            selectedEl.textContent = 'Select a start date (greyed out dates are unavailable).';
+        } else if (!calendarState.rangeEndISO) {
+            selectedEl.textContent = `Selected start: ${calendarState.rangeStartISO}. Select an end date.`;
+        } else {
+            selectedEl.textContent = `Selected: ${calendarState.rangeStartISO} → ${calendarState.rangeEndISO}`;
+        }
+
+        const requestBtn = document.getElementById('cal-request-btn');
+        if (requestBtn) {
+            requestBtn.disabled = !calendarState.rangeStartISO;
+        }
+
+        for (const btn of grid.querySelectorAll('button.cal-day.available')) {
+            btn.addEventListener('click', () => {
+                const iso = btn.dataset.iso;
+
+                if (!calendarState.rangeStartISO || (calendarState.rangeStartISO && calendarState.rangeEndISO)) {
+                    calendarState.rangeStartISO = iso;
+                    calendarState.rangeEndISO = null;
+                } else {
+                    if (iso < calendarState.rangeStartISO) {
+                        calendarState.rangeEndISO = calendarState.rangeStartISO;
+                        calendarState.rangeStartISO = iso;
+                    } else {
+                        calendarState.rangeEndISO = iso;
+                    }
+                }
+
+                calendarState.selectedISO = iso;
+                renderCalendar();
+            });
+        }
+    }
+
+    function openCalendar(event) {
+        const calendarModal = document.getElementById('calendar-modal');
+        calendarState.model = getModelFromEvent(event);
+        calendarState.availableSet = buildAvailableSet(calendarState.model);
+        calendarState.selectedISO = null;
+        calendarState.rangeStartISO = null;
+        calendarState.rangeEndISO = null;
+        setMonthCursor(new Date());
+
+        renderWeekdays();
+        calendarModal.showModal();
+        renderCalendar();
+    }
+
+    function closeCalendar() {
+        const calendarModal = document.getElementById('calendar-modal');
+        calendarModal.close();
+    }
+
+    document.getElementById('cal-prev')?.addEventListener('click', () => {
+        const d = new Date(calendarState.monthCursor);
+        d.setMonth(d.getMonth() - 1);
+        setMonthCursor(d);
+        renderCalendar();
+    });
+
+    document.getElementById('cal-next')?.addEventListener('click', () => {
+        const d = new Date(calendarState.monthCursor);
+        d.setMonth(d.getMonth() + 1);
+        setMonthCursor(d);
+        renderCalendar();
+    });
+
+    function formatDisplayDate(iso) {
+        const [y, m, d] = iso.split('-').map(Number);
+        const date = new Date(y, m - 1, d);
+        const dd = String(d).padStart(2, '0');
+        const mm = String(m).padStart(2, '0');
+        const yy = String(y).slice(-2);
+        const dayName = date.toLocaleDateString(undefined, { weekday: 'short' });
+        return `${dd}/${mm}/${yy} (${dayName})`;
+    }
+
+    function handleBookingRequest() {
+        const start = calendarState.rangeStartISO;
+        const end = calendarState.rangeEndISO || calendarState.rangeStartISO;
+        if (!start) {
+            alert('Please select at least a start date.');
+            return;
+        }
+        const model = calendarState.model || 'Rental';
+        const displayStart = formatDisplayDate(start);
+        const displayEnd = formatDisplayDate(end);
+        const text =
+            start === end
+                ? `Booking request for ${model} on ${displayStart}`
+                : `Booking request for ${model} from ${displayStart} to ${displayEnd}`;
+        const url = `https://wa.me/918471973427?text=${encodeURIComponent(text)}`;
+        window.open(url, '_blank');
+    }
+</script>
+</body>
+</html>
